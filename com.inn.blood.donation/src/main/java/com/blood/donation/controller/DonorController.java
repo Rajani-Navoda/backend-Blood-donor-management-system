@@ -2,6 +2,7 @@ package com.blood.donation.controller;
 
 import com.blood.donation.model.Donor;
 import com.blood.donation.repo.DonorRepo;
+import com.blood.donation.utils.QRCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,17 @@ public class DonorController {
             if(donorList.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+            //QR code generating code
+            if(donorList.size()!= 0){
+                for(Donor donor: donorList){
+                    QRCodeGenerator.generateQRCode(donor);
+                }
+            }
+            //end of the QR code generating
+
             return new ResponseEntity<>(donorList, HttpStatus.OK);
+
+
 
         }catch (Exception ex){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -47,6 +58,7 @@ public class DonorController {
         Donor donorObj = donorRepo.save(donor);
 
         return new ResponseEntity<>(donorObj, HttpStatus.OK);
+
     }
     @PostMapping("/updateDonorById/{id}")
     public ResponseEntity<Donor> updateDonor(@PathVariable Long id, @RequestBody Donor newDonorData){
