@@ -1,100 +1,102 @@
 package com.blood.donation.controller;
 
+import com.blood.donation.constants.Constants;
+import com.blood.donation.dto.DonorRegisterRequestDTO;
+import com.blood.donation.dto.UpdateDonorRequestDTO;
 import com.blood.donation.model.Donor;
-import com.blood.donation.repo.DonorRepo;
-import com.blood.donation.utils.QRCodeGenerator;
+import com.blood.donation.model.Image;
+import com.blood.donation.model.User;
+import com.blood.donation.service.DonorService;
+import com.blood.donation.service.UserService;
+import com.blood.donation.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@RequestMapping(path = "/donor")
 public class DonorController {
+
     @Autowired
-    private DonorRepo donorRepo;
+    private DonorService donorService;
+    @Autowired
+    private UserService userService;
 
-    @GetMapping("/getAllDonors")
-    public ResponseEntity<List<Donor>> getAllDonors(){
-        try{
-            List<Donor> donorList = new ArrayList<>();
-            donorRepo.findAll().forEach(donorList::add);
-
-            if(donorList.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            //QR code generating code
-            if(donorList.size()!= 0){
-                for(Donor donor: donorList){
-                    QRCodeGenerator.generateQRCode(donor);
-                }
-            }
-            //end of the QR code generating
-
-            return new ResponseEntity<>(donorList, HttpStatus.OK);
-
-
-
-        }catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//    @GetMapping("/getAllDonors")
+//    public ResponseEntity<List<Donor>> getAllDonors(){
+//        try{
+//            List<Donor> donorList = new ArrayList<>();
+//            donorRepo.findAll().forEach(donorList::add);
+//
+//            if(donorList.isEmpty()){
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//            return new ResponseEntity<>(donorList, HttpStatus.OK);
+//
+//        }catch (Exception ex){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//
+//    }
+    @GetMapping("/getDonorByUserName/{userName}")
+    @PreAuthorize("hasRole('ROLE_donor')")
+    public ResponseEntity<Donor> getDonorByUserName(@PathVariable String userName){
+        try {
+            User user = userService.getUserByName(userName);
+            Donor donor = donorService.getDonorByUserId(user.getUserId());
+            return new ResponseEntity<>(donor, HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-    }
-    @GetMapping("/getDonorById/{id}")
-    public ResponseEntity<Donor> getDonorByID(@PathVariable Long id){
-       Optional<Donor> donorData = donorRepo.findById(id);
-
-       if(donorData.isPresent()){
-           return new ResponseEntity<>( donorData.get(), HttpStatus.OK);
-       }
-       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/addDonor")
-    public ResponseEntity<Donor> addDonor(@RequestBody Donor donor){
-        Donor donorObj = donorRepo.save(donor);
-
-        return new ResponseEntity<>(donorObj, HttpStatus.OK);
-
-    }
-    @PostMapping("/updateDonorById/{id}")
-    public ResponseEntity<Donor> updateDonor(@PathVariable Long id, @RequestBody Donor newDonorData){
-        Optional<Donor> oldDonorData =donorRepo.findById(id);
-        if(oldDonorData.isPresent()){
-
-        Donor updateDonorData  = oldDonorData.get();
-        updateDonorData.setFirstName(newDonorData.getFirstName());
-        updateDonorData.setLastName(newDonorData.getLastName());
-        updateDonorData.setFullName(newDonorData.getFullName());
-        updateDonorData.setNIC(newDonorData.getNIC());
-        updateDonorData.setDOB(newDonorData.getDOB());
-        updateDonorData.setGender(newDonorData.getGender());
-        updateDonorData.setAddress(newDonorData.getAddress());
-        updateDonorData.setCity(newDonorData.getCity());
-        updateDonorData.setPostalCode(newDonorData.getPostalCode());
-        updateDonorData.setEmail(newDonorData.getEmail());
-        updateDonorData.setContactMobile(newDonorData.getContactMobile());
-        updateDonorData.setContactHome(newDonorData.getContactHome());
-        updateDonorData.setHeight(newDonorData.getHeight());
-        updateDonorData.setWeight(newDonorData.getWeight());
-        updateDonorData.setBMI(newDonorData.getBMI());
-        updateDonorData.setSpecialConditions(newDonorData.getSpecialConditions());
-
-            Donor donorObj = donorRepo.save(updateDonorData);
-            return new ResponseEntity<>(donorObj, HttpStatus.OK);
+//    @PostMapping(value = "/addDonor/{userName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping("/addDonor/{userName}")
+    @PreAuthorize("hasRole('ROLE_donor')")
+    public ResponseEntity<String> addDonor(@PathVariable("userName") String userName, @RequestBody DonorRegisterRequestDTO donorRegisterRequestDTO) {
+        try {
+//            Image image = uploadImage(file);
+            User user = userService.getUserByName(userName);
+            userService.updateIsFirstLoginToFalse(user);
+            donorService.addDonor(user, donorRegisterRequestDTO);
+            return Utils.getResponseEntity("Donor added successfully", HttpStatus.OK);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return Utils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/deleteDonorById/{id}")
-     public ResponseEntity<HttpStatus> deleteDonorById(@PathVariable Long id){
-        donorRepo.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-     }
+    @PostMapping("/updateDonor/{userName}")
+    @PreAuthorize("hasRole('ROLE_donor')")
+    public  ResponseEntity<String> updateDonor(@PathVariable("userName") String userName, @RequestBody UpdateDonorRequestDTO updateDonorRequestDTO) {
+        try {
+            User user = userService.getUserByName(userName);
+            User updatedUser = userService.updateUserDetails(user, updateDonorRequestDTO.getFirstName(), updateDonorRequestDTO.getLastName(), updateDonorRequestDTO.getEmail());
+            donorService.updateDonor(updatedUser, updateDonorRequestDTO);
+            return Utils.getResponseEntity("Donor updated successfully", HttpStatus.OK);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return Utils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+//    public Image uploadImage(MultipartFile file) throws IOException {
+//        Image image = new Image();
+//        image.setName(file.getOriginalFilename());
+//        image.setType(file.getContentType());
+//        image.setPicByte(file.getBytes());
+//        return image;
+//    }
+
+//    @DeleteMapping("/deleteDonorById/{id}")
+//     public ResponseEntity<HttpStatus> deleteDonorById(@PathVariable Integer id){
+//        donorRepo.deleteById(id);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//     }
 
 }
 
