@@ -13,6 +13,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 public class QRCodeGenerator {
+  /*
     public static void generateQRCode(Donor donor) throws IOException, WriterException {
         String qrCodePath = "F:\\blood donor management system\\QRcode\\";
         String qrCodeName = qrCodePath+ donor.getFirstName() + donor.getDonor_ID()+ "-QRCODE.png";
@@ -38,4 +39,6 @@ public class QRCodeGenerator {
                 Path path = FileSystems.getDefault().getPath(qrCodeName);
                 MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
     }
+
+   */
 }
