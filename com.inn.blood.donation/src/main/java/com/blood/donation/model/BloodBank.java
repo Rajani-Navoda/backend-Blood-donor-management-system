@@ -3,38 +3,35 @@ package com.blood.donation.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
-@Table(name = "Organizer")
+@Table(name = "Blood_bank")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Organizer {
+public class BloodBank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer organizerId;
+    private Integer bloodBankId;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "blood-bank_id")
-    private BloodBank bloodBank;
-
-    @Column(nullable = false)
-    private String fullName;
-
-    @Column(nullable = false)
-    private String nic;
-
-    @Column(nullable = false)
-    private String contactMobile;
-
-    private String contactHome;
-
     @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
+    private String district;
+
+    @Column(nullable = false)
+    private String postalCode;
+
+    @Column(nullable = false)
+    private String contactNumber;
+
 }

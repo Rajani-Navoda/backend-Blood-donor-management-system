@@ -4,18 +4,15 @@ import com.blood.donation.constants.Constants;
 import com.blood.donation.dto.DonorRegisterRequestDTO;
 import com.blood.donation.dto.UpdateDonorRequestDTO;
 import com.blood.donation.model.Donor;
-import com.blood.donation.model.Image;
 import com.blood.donation.model.User;
 import com.blood.donation.service.DonorService;
 import com.blood.donation.service.UserService;
 import com.blood.donation.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(path = "/donor")
@@ -54,12 +51,10 @@ public class DonorController {
         }
     }
 
-//    @PostMapping(value = "/addDonor/{userName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @PostMapping("/addDonor/{userName}")
     @PreAuthorize("hasRole('ROLE_donor')")
     public ResponseEntity<String> addDonor(@PathVariable("userName") String userName, @RequestBody DonorRegisterRequestDTO donorRegisterRequestDTO) {
         try {
-//            Image image = uploadImage(file);
             User user = userService.getUserByName(userName);
             userService.updateIsFirstLoginToFalse(user);
             donorService.addDonor(user, donorRegisterRequestDTO);

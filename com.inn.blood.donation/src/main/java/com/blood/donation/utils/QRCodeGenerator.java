@@ -15,29 +15,29 @@ import java.nio.file.Path;
 public class QRCodeGenerator {
   /*
     public static void generateQRCode(Donor donor) throws IOException, WriterException {
-        String qrCodePath = "F:\\blood donor management system\\QRcode\\";
-        String qrCodeName = qrCodePath+ donor.getFirstName() + donor.getDonor_ID()+ "-QRCODE.png";
-        var qrCodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = qrCodeWriter.encode("Donor_ID:" + donor.getDonor_ID()+ "\n"+
-                "first name: "+donor.getFirstName()+ "\n"+
-                "Last name: "+donor.getLastName() + "\n"+
-                "full name: "+ donor.getLastName()+ "\n"+
-                "NIC number: "+ donor.getNIC()+ "\n" +
-                "Date of Birth: " + donor.getDOB() + "\n"+
-                "gender: "+ donor.getGender() + "\n" +
-                "Address: " + donor.getAddress() + "\n"+
-                "city: " + donor.getCity() + "\n"+
-                "Postal code: "+ donor.getPostalCode() + "\n"+
-                "email: "+ donor.getEmail() + "\n"+
-                "contact number(mobile): "+ donor.getContactMobile() + "\n"+
-                "contact number(home): " + donor.getContactHome() + "\n"+
-                "Blood Group: " + donor.getBloodGroup() + "\n"+
-                "Height: "+ donor.getHeight() + "\n"+
-                "Weight: " + donor.getWeight() + "\n" +
-                "Special health conditions: " + donor.getSpecialConditions() + "\n", BarcodeFormat.QR_CODE,400, 400 );
-
-                Path path = FileSystems.getDefault().getPath(qrCodeName);
-                MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+//        String qrCodePath = "F:\\blood donor management system\\QRcode\\";
+//        String qrCodeName = qrCodePath+ donor.getFirstName() + donor.getDonor_ID()+ "-QRCODE.png";
+//        var qrCodeWriter = new QRCodeWriter();
+//        BitMatrix bitMatrix = qrCodeWriter.encode("Donor_ID:" + donor.getDonor_ID()+ "\n"+
+//                "first name: "+donor.getFirstName()+ "\n"+
+//                "Last name: "+donor.getLastName() + "\n"+
+//                "full name: "+ donor.getLastName()+ "\n"+
+//                "NIC number: "+ donor.getNIC()+ "\n" +
+//                "Date of Birth: " + donor.getDOB() + "\n"+
+//                "gender: "+ donor.getGender() + "\n" +
+//                "Address: " + donor.getAddress() + "\n"+
+//                "city: " + donor.getCity() + "\n"+
+//                "Postal code: "+ donor.getPostalCode() + "\n"+
+//                "email: "+ donor.getEmail() + "\n"+
+//                "contact number(mobile): "+ donor.getContactMobile() + "\n"+
+//                "contact number(home): " + donor.getContactHome() + "\n"+
+//                "Blood Group: " + donor.getBloodGroup() + "\n"+
+//                "Height: "+ donor.getHeight() + "\n"+
+//                "Weight: " + donor.getWeight() + "\n" +
+//                "Special health conditions: " + donor.getSpecialConditions() + "\n", BarcodeFormat.QR_CODE,400, 400 );
+//
+//                Path path = FileSystems.getDefault().getPath(qrCodeName);
+//                MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
     }
 
    */
