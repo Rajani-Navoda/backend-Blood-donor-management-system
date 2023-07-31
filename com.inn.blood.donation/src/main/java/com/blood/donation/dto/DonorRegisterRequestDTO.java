@@ -1,8 +1,5 @@
 package com.blood.donation.dto;
 
-import com.blood.donation.model.BloodGroup;
-import com.blood.donation.model.Gender;
-import com.blood.donation.model.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

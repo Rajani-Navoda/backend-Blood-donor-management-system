@@ -18,50 +18,46 @@ public class Donor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer donorId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id")
-    private Image profileImage;
-
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String fullName;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String nic;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private LocalDate dob;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String gender;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String address;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String city;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String postalCode;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String contactMobile;
 
     private String contactHome;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String bloodGroup;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private double height;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private double weight;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private double bmi;
 
     private String specialConditions;

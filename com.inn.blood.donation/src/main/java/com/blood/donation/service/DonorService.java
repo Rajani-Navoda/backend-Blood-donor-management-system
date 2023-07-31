@@ -16,7 +16,6 @@ public class DonorService {
     public void addDonor(User user, DonorRegisterRequestDTO donorRegisterRequestDTO) {
         Donor donor = new Donor();
         donor.setUser(user);
-//        donor.setProfileImage(image);
         donor.setFullName(donorRegisterRequestDTO.getFullName());
         donor.setNic(donorRegisterRequestDTO.getNic());
         donor.setDob(donorRegisterRequestDTO.getDob());
