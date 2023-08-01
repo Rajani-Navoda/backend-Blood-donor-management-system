@@ -41,7 +41,7 @@ public class DonorService {
         donor.setSpecialConditions(donorRegisterRequestDTO.getSpecialConditions());
         donor.setImageUrl(donorRegisterRequestDTO.getImageUrl());
 
-        String registrationNumber = generateRegistrationNumber(donorRegisterRequestDTO.getBloodGroup(), donorRegisterRequestDTO.getPostalCode(), donor.getDonorId());
+        String registrationNumber = generateRegistrationNumber(donorRegisterRequestDTO.getBloodGroup(), donorRegisterRequestDTO.getPostalCode(), donor.getUser().getUserId());
         donor.setRegistrationNumber(registrationNumber);
 
         try {
@@ -80,13 +80,18 @@ public class DonorService {
         return donorRepo.findByUserUserId(userID);
     }
 
-    private String generateRegistrationNumber(String bloodGroup, String postalCode, Integer donorId) {
-        return String.format("%s-%s-%06d", bloodGroup, postalCode, donorId);
+    public String getPathToDonorQrCode(Integer userId) {
+        Donor donor = donorRepo.findByUserUserId(userId);
+        return donor.getUser().getUserName()+donor.getUser().getUserId()+"-QRCODE.png";
+    }
+
+    private String generateRegistrationNumber(String bloodGroup, String postalCode, Integer userId) {
+        return String.format("%s%s-%d", bloodGroup, postalCode, userId);
     }
 
     private void generateQRCode(Donor donor) throws IOException, WriterException {
-        String qrCodePath = "F:\\blood donor management system\\QRcode\\";
-        String qrCodeName = qrCodePath + donor.getFullName() + donor.getDonorId() + "-QRCODE.png";
+        String qrCodePath = "D:\\University\\Projects\\blood-donor-management-system-front-end\\src\\assets\\images\\QR_Codes\\";
+        String qrCodeName = qrCodePath + donor.getUser().getUserName() + donor.getUser().getUserId() + "-QRCODE.png";
         var qrCodeWriter = new QRCodeWriter();
 
         BitMatrix bitMatrix = qrCodeWriter.encode(

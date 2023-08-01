@@ -50,6 +50,18 @@ public class DonorController {
         }
     }
 
+    @GetMapping("/getPathToQrCode/{userName}")
+    @PreAuthorize("hasRole('ROLE_donor')")
+    public ResponseEntity<String> getPathToQrCode(@PathVariable String userName){
+        try {
+            User user = userService.getUserByName(userName);
+            String path = donorService.getPathToDonorQrCode(user.getUserId());
+            return new ResponseEntity<>(path, HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping("/addDonor/{userName}")
     @PreAuthorize("hasRole('ROLE_donor')")
     public ResponseEntity<String> addDonor(@PathVariable("userName") String userName, @RequestBody DonorRegisterRequestDTO donorRegisterRequestDTO) {

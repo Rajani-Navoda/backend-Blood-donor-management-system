@@ -1,6 +1,7 @@
 package com.blood.donation.service;
 
 import com.blood.donation.dto.OrganizerRegisterRequestDTO;
+import com.blood.donation.dto.UpdateOrganizerRequestDTO;
 import com.blood.donation.model.Organizer;
 import com.blood.donation.model.User;
 import com.blood.donation.repo.OrganizerRepo;
@@ -26,6 +27,20 @@ public class OrganizerService {
 
         organizerRepo.save(organizer);
 
+    }
+
+    public void updateOrganizer(User user, UpdateOrganizerRequestDTO updateOrganizerRequestDto) {
+
+        Organizer organizer = organizerRepo.findByUserUserId(user.getUserId());
+
+        organizer.setUser(user);
+        organizer.setFullName(updateOrganizerRequestDto.getFullName());
+        organizer.setAddress(updateOrganizerRequestDto.getAddress());
+        organizer.setContactMobile(updateOrganizerRequestDto.getContactMobile());
+        organizer.setContactHome(updateOrganizerRequestDto.getContactHome());
+        organizer.setNic(organizer.getNic());
+
+        organizerRepo.save(organizer);
     }
 
     public Organizer getOrganizerByUserId(Integer userID) {

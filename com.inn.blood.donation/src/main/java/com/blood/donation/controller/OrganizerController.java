@@ -2,6 +2,8 @@ package com.blood.donation.controller;
 
 import com.blood.donation.constants.Constants;
 import com.blood.donation.dto.OrganizerRegisterRequestDTO;
+import com.blood.donation.dto.UpdateDonorRequestDTO;
+import com.blood.donation.dto.UpdateOrganizerRequestDTO;
 import com.blood.donation.model.Donor;
 import com.blood.donation.model.Organizer;
 import com.blood.donation.model.User;
@@ -26,22 +28,6 @@ public class OrganizerController {
     private OrganizerService organizerService;
     @Autowired
     private UserService userService;
-
-//    @GetMapping("/getAllOrganizers")
-//    public ResponseEntity<List<Organizer>> getAllOrganizers(){
-//    try{
-//        List<Organizer> organizerList = new ArrayList<>();
-//        organizerRepo.findAll().forEach(organizerList::add);
-//
-//        if(organizerList.isEmpty()){
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        return new ResponseEntity<>(organizerList,HttpStatus.OK);
-//
-//    } catch (Exception ex){
-//        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 
     @GetMapping("/getOrganizerByUserName/{userName}")
     @PreAuthorize("hasRole('ROLE_organizer')")
@@ -70,25 +56,18 @@ public class OrganizerController {
         }
 
     }
-//    @PostMapping("/updateOrganizerById")
-//    public ResponseEntity<Organizer> updateOrganizerById(@PathVariable Long Id, @RequestBody Organizer newOrganizerData){
-//        Optional<Organizer> oldOrganizerData=organizerRepo.findById(Id);
-//
-//        if(oldOrganizerData.isPresent()){
-//            Organizer updatedOrganizerData = oldOrganizerData.get();
-//            updatedOrganizerData.setOrg_name(newOrganizerData.getOrg_name());
-//            updatedOrganizerData.setOrg_email(newOrganizerData.getOrg_email());
-//            updatedOrganizerData.setOrg_contact(newOrganizerData.getOrg_contact());
-//
-//            Organizer organizerObj = organizerRepo.save(updatedOrganizerData);
-//            return new ResponseEntity<>(organizerObj,HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//    }
-//
-//    @DeleteMapping("/DeleteOrganizerById")
-//    public ResponseEntity<HttpStatus> deleteOrganizerById(@PathVariable Long Id){
-//        organizerRepo.deleteById(Id);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+
+    @PostMapping("/updateOrganizer/{userName}")
+    @PreAuthorize("hasRole('ROLE_organizer')")
+    public  ResponseEntity<String> updateOrganizer(@PathVariable("userName") String userName, @RequestBody UpdateOrganizerRequestDTO updateOrganizerRequestDTO) {
+        try {
+            User user = userService.getUserByName(userName);
+            User updatedUser = userService.updateUserDetails(user, updateOrganizerRequestDTO.getFirstName(), updateOrganizerRequestDTO.getLastName(), updateOrganizerRequestDTO.getEmail());
+            organizerService.updateOrganizer(updatedUser, updateOrganizerRequestDTO);
+            return Utils.getResponseEntity("Donor updated successfully", HttpStatus.OK);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return Utils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
