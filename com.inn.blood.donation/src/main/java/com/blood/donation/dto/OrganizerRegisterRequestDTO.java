@@ -17,5 +17,5 @@ public class OrganizerRegisterRequestDTO {
     private String contactMobile;
     private String contactHome;
     private String address;
-    private BloodBank bloodBank;
+
 }

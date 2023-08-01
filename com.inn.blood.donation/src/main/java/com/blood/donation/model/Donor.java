@@ -23,6 +23,9 @@ public class Donor {
     private User user;
 
     @Column(nullable = false)
+    private String registrationNumber;
+
+    @Column(nullable = false)
     private String fullName;
 
     @Column(nullable = false)
@@ -61,5 +64,7 @@ public class Donor {
     private double bmi;
 
     private String specialConditions;
+
+    private String imageUrl;
 
 }

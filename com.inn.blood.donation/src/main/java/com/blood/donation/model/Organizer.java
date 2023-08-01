@@ -20,10 +20,6 @@ public class Organizer {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "blood-bank_id")
-    private BloodBank bloodBank;
-
     @Column(nullable = false)
     private String fullName;
 

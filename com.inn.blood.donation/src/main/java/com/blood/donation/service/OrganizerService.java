@@ -18,7 +18,6 @@ public class OrganizerService {
         Organizer organizer = new Organizer();
 
         organizer.setUser(user);
-        organizer.setBloodBank(organizerRegisterRequestDTO.getBloodBank());
         organizer.setFullName(organizerRegisterRequestDTO.getFullName());
         organizer.setNic(organizerRegisterRequestDTO.getNic());
         organizer.setAddress(organizerRegisterRequestDTO.getAddress());
@@ -27,5 +26,10 @@ public class OrganizerService {
 
         organizerRepo.save(organizer);
 
+    }
+
+    public Organizer getOrganizerByUserId(Integer userID) {
+
+        return organizerRepo.findByUserUserId(userID);
     }
 }

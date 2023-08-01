@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface BloodBankRepo extends JpaRepository<BloodBank, Integer> {
 
-    List<BloodBank> findAll();
+    BloodBank findByUserUserId(@Param("userId") Integer userId);
 }

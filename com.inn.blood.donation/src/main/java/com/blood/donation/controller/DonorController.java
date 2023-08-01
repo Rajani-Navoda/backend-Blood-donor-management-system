@@ -37,7 +37,6 @@ public class DonorController {
 //        }catch (Exception ex){
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
-//
 //    }
     @GetMapping("/getDonorByUserName/{userName}")
     @PreAuthorize("hasRole('ROLE_donor')")
@@ -78,14 +77,6 @@ public class DonorController {
             return Utils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-//    public Image uploadImage(MultipartFile file) throws IOException {
-//        Image image = new Image();
-//        image.setName(file.getOriginalFilename());
-//        image.setType(file.getContentType());
-//        image.setPicByte(file.getBytes());
-//        return image;
-//    }
 
 //    @DeleteMapping("/deleteDonorById/{id}")
 //     public ResponseEntity<HttpStatus> deleteDonorById(@PathVariable Integer id){
