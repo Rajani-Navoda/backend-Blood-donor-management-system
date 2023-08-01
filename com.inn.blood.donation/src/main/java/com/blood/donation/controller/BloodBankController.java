@@ -2,10 +2,7 @@ package com.blood.donation.controller;
 
 import com.blood.donation.constants.Constants;
 import com.blood.donation.dto.CreateBloodBankRequestDTO;
-import com.blood.donation.dto.DonorRegisterRequestDTO;
 import com.blood.donation.model.BloodBank;
-import com.blood.donation.model.Donor;
-import com.blood.donation.model.User;
 import com.blood.donation.service.BloodBankService;
 import com.blood.donation.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;

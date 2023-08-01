@@ -2,6 +2,7 @@ package com.blood.donation.controller;
 
 import com.blood.donation.constants.Constants;
 import com.blood.donation.dto.OrganizerRegisterRequestDTO;
+import com.blood.donation.model.Donor;
 import com.blood.donation.model.Organizer;
 import com.blood.donation.model.User;
 import com.blood.donation.repo.OrganizerRepo;
@@ -42,15 +43,17 @@ public class OrganizerController {
 //        }
 //    }
 
-//    @GetMapping("/getOrganizerById/{Id}")
-//    public ResponseEntity<Organizer> getOrganizerById(@PathVariable Long Id){
-//    Optional<Organizer> organizerData =organizerRepo.findById(Id);
-//
-//    if(organizerData.isPresent()){
-//        return new ResponseEntity<>(organizerData.get(),HttpStatus.OK);
-//    }
-//    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//    }
+    @GetMapping("/getOrganizerByUserName/{userName}")
+    @PreAuthorize("hasRole('ROLE_organizer')")
+    public ResponseEntity<Organizer> getOrganizerByUserName(@PathVariable String userName){
+        try {
+            User user = userService.getUserByName(userName);
+            Organizer organizer = organizerService.getOrganizerByUserId(user.getUserId());
+            return new ResponseEntity<>(organizer, HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
     @PostMapping("/addOrganizer/{userName}")

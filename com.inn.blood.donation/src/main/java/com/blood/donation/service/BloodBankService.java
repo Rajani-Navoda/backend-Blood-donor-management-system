@@ -2,6 +2,7 @@ package com.blood.donation.service;
 
 import com.blood.donation.dto.CreateBloodBankRequestDTO;
 import com.blood.donation.model.BloodBank;
+import com.blood.donation.model.Donor;
 import com.blood.donation.model.User;
 import com.blood.donation.repo.BloodBankRepo;
 import com.blood.donation.repo.UserRepo;
@@ -43,6 +44,10 @@ public class BloodBankService {
 
     public List<BloodBank> getAllBloodBanks() {
         return bloodBankRepo.findAll();
+    }
+
+    public BloodBank getBloodBankByUserId(Integer userID) {
+        return bloodBankRepo.findByUserUserId(userID);
     }
 
     private String getEncodedPassword(String password) {

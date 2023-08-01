@@ -27,4 +27,5 @@ public class DonorRegisterRequestDTO {
     private double weight;
     private double bmi;
     private String specialConditions;
+    private String imageUrl;
 }
